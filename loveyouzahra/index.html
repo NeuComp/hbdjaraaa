@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>for my zahraa!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #a8edea, #667eea);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(173, 216, 230, 0.7);
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main-container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .menu-card h3 {
+            color: #fff;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .menu-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 25px 25px 0 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-header h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+        }
+
+        .photo-frame:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .photo-caption {
+            font-style: italic;
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card.flipped {
+            background: white;
+            color: #4facfe;
+            transform: rotateY(180deg);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto 20px;
+        }
+
+        .puzzle-piece {
+            aspect-ratio: 1;
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+            color: #2c5aa0;
+            font-weight: bold;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.1);
+        }
+
+        .puzzle-piece.correct {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .word-input {
+            font-size: 1.2rem;
+            padding: 15px 20px;
+            border: 3px solid #4facfe;
+            border-radius: 25px;
+            outline: none;
+            margin: 10px;
+            text-align: center;
+            width: 200px;
+        }
+
+        .love-messages {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .message {
+            font-size: 1.2rem;
+            color: #fff;
+            line-height: 1.6;
+            margin: 15px 0;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .love-letter {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .love-letter p {
+            margin-bottom: 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .word-input {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>HAPPY BIRTHDAYYY!</h1>
+            <p class="subtitle">barakallah fii umrik yaa sayangku cantikkuuu, AKUU ADA BUAT INII DILIHAT YAAA</p>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid">
+            <div class="menu-card" onclick="openModal('photosModal')">
+                <span class="menu-card-icon">📸</span>
+                <h3>our memories :)</h3>
+                <p>some memories i took when we were spenting time together hehe.</p>
+            </div>
+            
+            <div class="menu-card" onclick="openModal('gamesModal')">
+                <span class="menu-card-icon">🎮</span>
+                <h3>fun games</h3>
+                <p>DIMAININ YAAA SEMOGA SUKAAA!</p>
+            </div>
+            
+            <div class="menu-card" onclick="openModal('wordsModal')">
+                <span class="menu-card-icon">💝</span>
+                <h3>sweet words?</h3>
+                <p>COBAIN INI JUGA DEHHH</p>
+            </div>
+            
+            <div class="menu-card" onclick="openModal('letterModal')">
+                <span class="menu-card-icon">💌</span>
+                <h3>love letter for my girl!</h3>
+                <p>a heartfelt written to no one but only you.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photos Modal -->
+    <div id="photosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>photos of the year?</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="photo-gallery">
+                    <div class="photo-frame">
+                        <img src="memory_images/IMG-20250921-WA0011.jpg" alt="Memory 1" style="width:100%;border-radius:10px;object-fit:cover;height:200px;">
+                        <p class="photo-caption">ini lucuuk sii tapi udaa lama yaaaa HAHAHA</p>
+                    </div>
+                    <div class="photo-frame">
+                        <img src="memory_images/IMG-20250921-WA0013.jpg" alt="Memory 2" style="width:100%;border-radius:10px;object-fit:cover;height:200px;">
+                        <p class="photo-caption">yeyeyy main barengg :3</p>
+                    </div>
+                    <div class="photo-frame">
+                        <img src="memory_images/IMG-20250921-WA0014.jpg" alt="Memory 3" style="width:100%;border-radius:10px;object-fit:cover;height:200px;">
+                        <p class="photo-caption">HAHAHA LIAT ADA YUSUP NEMPIL WKWKWK</p>
+                    </div>
+                    <div class="photo-frame">
+                        <img src="memory_images/IMG-20250921-WA0012.jpg" alt="Memory 4" style="width:100%;border-radius:10px;object-fit:cover;height:200px;">
+                        <p class="photo-caption">i love it when you're happy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Modal -->
+    <div id="gamesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>memory matchings</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body text-center">
+                <p style="color: white; margin-bottom: 20px; font-size: 1.1rem;">cari yang berpasangan yaa!</p>
+                <div class="memory-game" id="memoryGame"></div>
+                <button class="btn" onclick="resetMemoryGame()">ulang</button>
+                <div id="memoryMessages" class="love-messages" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Words Modal -->
+    <div id="wordsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>sweet words for my princess :3</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body text-center">
+                <p style="color: white; margin-bottom: 20px; font-size: 1.1rem;">COBA TULIS GORGEOUS :?</p>
+                <div>
+                    <input type="text" class="word-input" id="wordInput" placeholder="beautiful, amazing...">
+                    <button class="btn" onclick="revealMessage()">Send Love</button>
+                </div>
+                <div id="loveMessages" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Letter Modal -->
+    <div id="letterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="love-letter">
+                    <p>my dearest beautiful,</p>
+                    
+                    <p>celamatt ulang tahun yaaaa, cantikkuu ga kerasaa udaa 18 tahun niii. akuu cuman mau bilang semoga cita-citanya tercapai dan semakin semangat
+                        menjalani hari-hari berikutnyaaa! walaupun semakin capee sii karena sibuk yaa? :(</p>
+                    
+                    <p>it's okaayy cantikk, i'm here and you don't have to worry about anything. akuu bakalan nyemangatinnn dan pastinya jadi support kamu yang terbaikk!</p>
+
+                    <p>anyways, i wish you the best. wish you not only a long life, but a happy life.</p>
+
+                    <p style="text-align: right; margin-top: 30px;">with all my love and birthday wishes,<br> - your beloved galvin 💙</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Floating Hearts Animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = Math.random() > 0.5 ? '💙' : '🤍';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            document.getElementById('floatingHearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 2000);
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking X or outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('close')) {
+                closeModal(e.target.closest('.modal'));
+            }
+            if (e.target.classList.contains('modal')) {
+                closeModal(e.target);
+            }
+        });
+
+        // Memory Game - Use images instead of emojis, 10 pairs
+    const memoryImages = [
+        "images/IMG-20250921-WA0001.jpg",
+        "images/IMG-20250921-WA0002.jpg",
+        "images/IMG-20250921-WA0003.jpg",
+        "images/IMG-20250921-WA0004.jpg",
+        "images/IMG-20250921-WA0005.jpg",
+        "images/IMG-20250921-WA0006.jpg",
+        "images/IMG-20250921-WA0007.jpg",
+        "images/IMG-20250921-WA0008.jpg",
+        "images/IMG-20250921-WA0009.jpg",
+        "images/IMG-20250921-WA0010.jpg"
+    ];
+    const memoryPairs = [...memoryImages, ...memoryImages];
+    let flippedCards = [];
+    let matchedPairs = 0;
+
+    const sweetMessages = [
+        "You are my sunshine on cloudy days ☀️",
+        "Every moment with you is a treasure 💎",
+        "Your smile is my favorite view 😍",
+        "You make my heart skip a beat 💓",
+        "With you, every day feels like magic ✨",
+        "You are my happily ever after 👑",
+        "Your love is my greatest adventure 🗺️",
+        "You are absolutely perfect just as you are 🌟"
+    ];
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function createMemoryGame() {
+        const gameContainer = document.getElementById('memoryGame');
+        gameContainer.innerHTML = '';
+        shuffleArray(memoryPairs);
+
+        memoryPairs.forEach((imgSrc, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.symbol = imgSrc;
+            card.dataset.index = index;
+            card.innerHTML = `<img src="${imgSrc}" alt="memory" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:10px;">`;
+            card.addEventListener('click', flipCard);
+            gameContainer.appendChild(card);
+        });
+
+        // Adjust grid for 5x4 layout
+        gameContainer.style.gridTemplateColumns = 'repeat(5, 1fr)';
+    }
+
+    function flipCard(e) {
+        const card = e.currentTarget;
+        if (card.classList.contains('flipped') || flippedCards.length === 2) return;
+
+        card.classList.add('flipped');
+        card.querySelector('img').style.display = 'block';
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+            setTimeout(checkMatch, 1000);
+        }
+    }
+
+    function checkMatch() {
+        const [card1, card2] = flippedCards;
+
+        if (card1.dataset.symbol === card2.dataset.symbol) {
+            matchedPairs++;
+            showSweetMessage();
+
+            if (matchedPairs === memoryImages.length) {
+                setTimeout(() => {
+                    alert('🎉 You won! You know my heart so well! 💙');
+                }, 500);
+            }
+        } else {
+            card1.classList.remove('flipped');
+            card2.classList.remove('flipped');
+            card1.querySelector('img').style.display = 'none';
+            card2.querySelector('img').style.display = 'none';
+        }
+
+        flippedCards = [];
+    }
+
+    function showSweetMessage() {
+        const messagesDiv = document.getElementById('memoryMessages');
+        messagesDiv.style.display = 'block';
+        const randomMessage = sweetMessages[Math.floor(Math.random() * sweetMessages.length)];
+        const messageP = document.createElement('p');
+        messageP.className = 'message';
+        messageP.innerHTML = randomMessage;
+        messagesDiv.appendChild(messageP);
+    }
+
+    function resetMemoryGame() {
+        matchedPairs = 0;
+        flippedCards = [];
+        document.getElementById('memoryMessages').innerHTML = '';
+        document.getElementById('memoryMessages').style.display = 'none';
+        createMemoryGame();
+    }
+
+    // ...rest of your script remains unchanged...
+
+    // Initialize games
+    createMemoryGame();
+    createPuzzle();
+
+        // Word Puzzle Game
+        const puzzleMessage = "YOU ARE MY EVERYTHING";
+        const puzzlePieces = puzzleMessage.split(' ');
+        let currentPuzzle = [];
+
+        function createPuzzle() {
+            const grid = document.getElementById('puzzleGrid');
+            grid.innerHTML = '';
+            currentPuzzle = [...puzzlePieces];
+            shuffleArray(currentPuzzle);
+            
+            while (currentPuzzle.length < 9) {
+                currentPuzzle.push('');
+            }
+            
+            currentPuzzle.forEach((word, index) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.innerHTML = word;
+                piece.addEventListener('click', () => movePiece(index));
+                grid.appendChild(piece);
+            });
+        }
+
+        function movePiece(index) {
+            const emptyIndex = currentPuzzle.indexOf('');
+            if (isAdjacent(index, emptyIndex)) {
+                [currentPuzzle[index], currentPuzzle[emptyIndex]] = [currentPuzzle[emptyIndex], currentPuzzle[index]];
+                updatePuzzleDisplay();
+                checkPuzzleSolved();
+            }
+        }
+
+        function isAdjacent(index1, index2) {
+            const row1 = Math.floor(index1 / 3);
+            const col1 = index1 % 3;
+            const row2 = Math.floor(index2 / 3);
+            const col2 = index2 % 3;
+            
+            return Math.abs(row1 - row2) + Math.abs(col1 - col2) === 1;
+        }
+
+        function updatePuzzleDisplay() {
+            const pieces = document.querySelectorAll('.puzzle-piece');
+            pieces.forEach((piece, index) => {
+                piece.innerHTML = currentPuzzle[index];
+            });
+        }
+
+        function checkPuzzleSolved() {
+            if (currentPuzzle.slice(0, puzzlePieces.length).join(' ') === puzzleMessage) {
+                document.getElementById('puzzleMessage').innerHTML = '🎉 Perfect! ' + puzzleMessage + ' 💙';
+                document.querySelectorAll('.puzzle-piece').forEach((piece, index) => {
+                    if (index < puzzlePieces.length) {
+                        piece.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        function shufflePuzzle() {
+            createPuzzle();
+            document.getElementById('puzzleMessage').innerHTML = '';
+            document.querySelectorAll('.puzzle-piece').forEach(piece => {
+                piece.classList.remove('correct');
+            });
+        }
+
+        function solvePuzzle() {
+            currentPuzzle = [...puzzlePieces, '', '', ''];
+            updatePuzzleDisplay();
+            checkPuzzleSolved();
+        }
+
+        // Sweet Words Game
+        const loveResponses = {
+            beautiful: "Yes! You are absolutely stunning, inside and out! 😍",
+            amazing: "You truly are the most amazing person I know! ✨",
+            perfect: "You're perfect exactly as you are! 💙",
+            gorgeous: "Your beauty takes my breath away every single day! 🌺",
+            wonderful: "You make my world wonderful! 🌈",
+            incredible: "You're incredibly special to me! 💎",
+            lovely: "You're the loveliest person in my universe! 🌸",
+            stunning: "Your beauty is absolutely stunning! 💫",
+            sweet: "You're the sweetest thing in my life! 🍯",
+            precious: "You're more precious than any treasure! 💎",
+            default: "Every word you inspire in me is filled with love! Whatever word you chose, it perfectly describes how amazing you are! 💙"
+        };
+
+        function revealMessage() {
+            const input = document.getElementById('wordInput');
+            const word = input.value.toLowerCase().trim();
+            const messagesDiv = document.getElementById('loveMessages');
+            
+            if (!word) return;
+            
+            messagesDiv.style.display = 'block';
+            messagesDiv.className = 'love-messages';
+            const response = loveResponses[word] || loveResponses.default;
+            
+            const messageP = document.createElement('p');
+            messageP.className = 'message';
+            messageP.innerHTML = `"${input.value}" - ${response}`;
+            messagesDiv.appendChild(messageP);
+            
+            input.value = '';
+            
+            setTimeout(() => {
+                messageP.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    messageP.style.transform = 'scale(1)';
+                }, 200);
+            }, 100);
+        }
+
+        document.getElementById('wordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                revealMessage();
+            }
+        });
+
+        // Initialize games
+        createMemoryGame();
+        createPuzzle();
+    </script>
+</body>
+</html>
